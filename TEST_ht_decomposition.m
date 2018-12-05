@@ -84,9 +84,9 @@ end
 
 for i=1:n_algs
     results{i}.res_mean = mean(results{i}.res);
-    results{i}.res_std = std(results{i}.res);
     results{i}.msir_mean = mean(results{i}.msir);
-    results{i}.msir_std = std(results{i}.msir);
     results{i}.et_mean = mean(results{i}.et);
+    results{i}.res_std = std(results{i}.res);
+    results{i}.msir_std = std(results{i}.msir);
     results{i}.et_std = std(results{i}.et);
 end
