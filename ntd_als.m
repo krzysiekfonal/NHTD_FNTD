@@ -75,8 +75,9 @@ for iter = 1:opts.maxiters
         
         GtA = full(ttm(G,AtA,-n));
         GtAn = tenmat(GtA,n);
-        B = Gn * GtAn';
-        A{n} = max(1e-10,double(YtAnG)/double(B));        
+        B = double(Gn * GtAn');
+        %A{n} = max(1e-10,double(YtAnG)/(B + 1e-6*eye(size(B,1))));
+        A{n} = max(1e-10,double(YtAnG)*pinv(B));
         ellA = sqrt(sum(A{n}.^2,1));
         G = ttm(G,diag(ellA),n);
         A{n} = bsxfun(@rdivide,A{n},ellA);
@@ -122,7 +123,7 @@ end
 function param = parseInput(opts)
 %% Set algorithm parameters from input or by using defaults
 param = inputParser;
-param.KeepUnmatched = true;
+%param.KeepUnmatched = true;
 param.addOptional('init','random',@(x) (iscell(x) || isa(x,'ttensor')||ismember(x(1:4),{'rand' 'nvec' 'fibe' 'nmfs'})));
 param.addOptional('maxiters',50);
 param.addOptional('tol',1e-6);
@@ -132,7 +133,7 @@ param.addParamValue('lortho',0);
 param.addParamValue('lsparse',0);
 param.addParamValue('alsinit',1);
 
-param.parse(opts);
+param.parse(opts{:});
 param = param.Results;
 end
 

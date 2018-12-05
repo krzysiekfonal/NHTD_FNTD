@@ -78,7 +78,7 @@ for iter = 1:opts.maxiters
         B = Gn * GtAn';
         for r = 1:R(n)
             A{n}(:,r) = YtAnG(:,r) - A{n}(:,[1:r-1 r+1:end]) * B([1:r-1 r+1:end],r);
-            A{n}(:,r) = max(1e-10,A{n}(:,r)/B(r,r));
+            A{n}(:,r) = max(1e-10,A{n}(:,r)/(B(r,r) + eps));
         end
         ellA = sqrt(sum(A{n}.^2,1));
         G = ttm(G,diag(ellA),n);
@@ -125,7 +125,7 @@ end
 function param = parseInput(opts)
 %% Set algorithm parameters from input or by using defaults
 param = inputParser;
-param.KeepUnmatched = true;
+%param.KeepUnmatched = true;
 param.addOptional('init','random',@(x) (iscell(x) || isa(x,'ttensor')||ismember(x(1:4),{'rand' 'nvec' 'fibe' 'nmfs'})));
 param.addOptional('maxiters',50);
 param.addOptional('tol',1e-6);
@@ -135,7 +135,7 @@ param.addParamValue('lortho',0);
 param.addParamValue('lsparse',0);
 param.addParamValue('alsinit',1);
 
-param.parse(opts);
+param.parse(opts{:});
 param = param.Results;
 end
 
