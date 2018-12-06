@@ -3,7 +3,7 @@ benchmark = 1; %1 - coil_100, 2 - film4
 % 1 - NHTD(als), 2 - NHTD(hals), 3 - NHTD(xray), 4 - HTD(left_svd_qr)
 % 5 - NTD(als), 6 - NTD(hals), 7 - NTD(xray), 8 - HO-SVD
 % 9 - FNTD(als), 10 - FNTD(hals), 11 - FNTD(xray), 12 - FTD(svd)
-algs = [];
+algs = [1 2 3 4 5 6 8 9 10 11 12];
 MC = 5;
 n_algs = size(algs, 2);
 SNR = 0;

@@ -47,32 +47,32 @@ for i=1:n_algs
 end
 
 for mc=1:MC
-    for i=1:n_algs
-        if benchmark == 1
-            % Generate core tensors and factor matirces
-            Core = max(0,randn(ranks(1:4)));
-            U = cell(1,4);
-            U{1} = max(0,randn(dims(1), ranks(1)));
-            U{2} = max(0,randn(dims(2), ranks(2)));
-            U{3} = max(0,randn(dims(3), ranks(3)));
-            U{4} = max(0,randn(dims(4), ranks(4)));
-            X_ = tensor_contraction(...
-                tensor_contraction(...
-                tensor_contraction(...
-                tensor_contraction(Core, U{1}, 1, 2),...
-                U{2}, 1, 2),...
-                U{3}, 1, 2),...
-                U{4}, 1, 2);
-        end
-        
-        if SNR ~= 0
-            Nt = randn(size(X_)); 
-            tau = (norm(X_(:),'fro')/norm(Nt(:), 'fro'))*10^(-SNR/20);
-            X = X_ + tau*Nt;
-            else
-            X = X_;
-        end    
+    if benchmark == 1
+        % Generate core tensors and factor matirces
+        Core = max(0,randn(ranks(1:4)));
+        U = cell(1,4);
+        U{1} = max(0,randn(dims(1), ranks(1)));
+        U{2} = max(0,randn(dims(2), ranks(2)));
+        U{3} = max(0,randn(dims(3), ranks(3)));
+        U{4} = max(0,randn(dims(4), ranks(4)));
+        X_ = tensor_contraction(...
+            tensor_contraction(...
+            tensor_contraction(...
+            tensor_contraction(Core, U{1}, 1, 2),...
+            U{2}, 1, 2),...
+            U{3}, 1, 2),...
+            U{4}, 1, 2);
+    end
 
+    if SNR ~= 0
+        Nt = randn(size(X_)); 
+        tau = (norm(X_(:),'fro')/norm(Nt(:), 'fro'))*10^(-SNR/20);
+        X = X_ + tau*Nt;
+        else
+        X = X_;
+    end
+        
+    for i=1:n_algs
         r = launch_alg(X, X_, U, ranks, algs(i),...
             'tol', tol, 'maxiters', maxiters);
         results{i}.res(mc) = r.res;
