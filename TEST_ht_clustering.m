@@ -70,7 +70,9 @@ for i=1:n_algs
     results{i}.res_mean = mean(results{i}.res);
     results{i}.acc_mean = mean(results{i}.acc);
     results{i}.et_mean = mean(results{i}.et);
+    results{i}.etcl_mean = mean(results{i}.etcl);
     results{i}.res_std = std(results{i}.res);
     results{i}.acc_std = std(results{i}.acc);
     results{i}.et_std = std(results{i}.et);
+    results{i}.etcl_std = std(results{i}.etcl);
 end
