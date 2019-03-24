@@ -7,17 +7,37 @@ tic
 switch (alg)
     %HT ALGS
     case 1
-        Yht = nht_decomposition(X, ranks, 'als', varargin{1:end});
-        Y = ht_to_tensor(Yht);
+        if (N == 4)
+            Yht = nht_decomposition(X, ranks, 'als', varargin{1:end});
+            Y = ht_to_tensor(Yht);
+        else
+            Yht = nht_decomposition_8(X, ranks, 'als', varargin{1:end});
+            Y = ht_to_tensor_8(Yht);
+        end
     case 2
-        Yht = nht_decomposition(X, ranks, 'hals', varargin{1:end});
-        Y = ht_to_tensor(Yht);
+        if (N == 4)
+            Yht = nht_decomposition(X, ranks, 'hals', varargin{1:end});
+            Y = ht_to_tensor(Yht);
+        else
+            Yht = nht_decomposition_8(X, ranks, 'hals', varargin{1:end});
+            Y = ht_to_tensor_8(Yht);
+        end
     case 3
-        Yht = nht_decomposition(X, ranks, 'xray', varargin{1:end});
-        Y = ht_to_tensor(Yht);
+        if (N == 4)
+            Yht = nht_decomposition(X, ranks, 'xray', varargin{1:end});
+            Y = ht_to_tensor(Yht);
+        else
+            Yht = nht_decomposition_8(X, ranks, 'xray', varargin{1:end});
+            Y = ht_to_tensor_8(Yht);
+        end
     case 4
-        Yht = ht_decomposition(X, ranks, 'left_svd_qr', varargin{1:end});
-        Y = ht_to_tensor(Yht);        
+        if (N == 4)
+            Yht = ht_decomposition(X, ranks, 'left_svd_qr', varargin{1:end});
+            Y = ht_to_tensor(Yht);
+        else
+            Yht = ht_decomposition_8(X, ranks, 'left_svd_qr', varargin{1:end});
+            Y = ht_to_tensor_8(Yht);
+        end
     case 5
         Yht = ntd_decomposition(X, ranks, 'ntd_als', varargin{1:end});
         Y = tucker_to_tensor(Yht);        

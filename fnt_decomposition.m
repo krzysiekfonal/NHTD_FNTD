@@ -11,7 +11,7 @@ for n = 1:N
     X = reshape(B, [ranks(n:-1:1) dim(n+1:N)]);
     dim(n) = ranks(n);
 end
-Xtt{5} = permute(X,[4 3 2 1]);
+Xtt{N+1} = permute(X,N:-1:1);
 
 end
 

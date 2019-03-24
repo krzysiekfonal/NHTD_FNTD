@@ -1,10 +1,10 @@
 function [ X ] = tucker_to_tensor( Xt )
 
-X = tensor_contraction(tensor_contraction(tensor_contraction(tensor_contraction(...
-    Xt{5}, Xt{1}, 1, 2),...
-    Xt{2}, 1, 2),...
-    Xt{3}, 1, 2),...
-    Xt{4}, 1, 2);
+N = size(Xt);
+X = Xt{N};
+for n=1:N-1
+    X = tensor_contraction(X, Xt{n}, 1, 2);
+end
 
 end
 
