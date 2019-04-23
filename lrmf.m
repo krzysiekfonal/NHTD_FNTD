@@ -14,8 +14,7 @@ params.parse(varargin{1}{:});
 if strcmp(alg, 'hals')
     [A,B] = nmf_fast_hals(Y, rank, params.Results.tol, params.Results.maxiters, 1);
 elseif strcmp(alg, 'als')
-    opts = statset('MaxIter',params.Results.maxiters,'TolFun',params.Results.tol);
-    [A,B] = nnmf(Y, rank, 'options', opts);
+    [A,B] = nmf_als(Y, rank, params.Results.tol, params.Results.maxiters, 1);
 elseif strcmp(alg, 'svd')
     [U,S,V] = svd(Y, 'econ');
     U = U*S;
