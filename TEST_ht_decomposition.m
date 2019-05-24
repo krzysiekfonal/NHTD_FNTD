@@ -3,8 +3,8 @@ benchmark = 1; %1 - test data, 2 - coil_100, 3 - film4
 % 1 - NHTD(als), 2 - NHTD(hals), 3 - NHTD(xray), 4 - HTD(left_svd_qr)
 % 5 - NTD(als), 6 - NTD(hals), 7 - NTD(xray), 8 - HO-SVD
 % 9 - FNTD(als), 10 - FNTD(hals), 11 - FNTD(xray), 12 - FTD(svd)
-algs = [1 2 3 4 5 6 8 9 10 11 12];
-SNR = [];
+algs = [1 2];
+SNR = 10;
 MC = 1;
 n_algs = size(algs, 2);
 
@@ -18,7 +18,7 @@ maxiters = 100;
 if benchmark == 1
     % dims ranks for this benchmark
     dims = [20 40 40 50];
-    ranks = [5 5 5 5 3 3 1];
+    ranks = {{5,5,5,5},{3,3}};
 elseif benchmark == 2
     N = size(ranks,2);
     U = [];
@@ -64,13 +64,13 @@ for mc=1:MC
 %             U{3}, 1, 2),...
 %             U{4}, 1, 2);
 %2nd approach
-        Core = sparse_matrix(ranks(1) * ranks(2), ranks(3) * ranks(4), 0.9);
-        Core = reshape(Core, ranks(1:4));
+        Core = sparse_matrix(ranks{1}{1} * ranks{1}{2}, ranks{1}{3} * ranks{1}{4}, 0.9);
+        Core = reshape(Core, ranks{1}{1:4});
         U = cell(1,4);
-        U{1} = sparse_matrix(dims(1), ranks(1), 0.9);
-        U{2} = sparse_matrix(dims(2), ranks(2), 0.9);
-        U{3} = sparse_matrix(dims(3), ranks(3), 0.9);
-        U{4} = sparse_matrix(dims(4), ranks(4), 0.9);
+        U{1} = sparse_matrix(dims(1), ranks{1}{1}, 0.9);
+        U{2} = sparse_matrix(dims(2), ranks{1}{2}, 0.9);
+        U{3} = sparse_matrix(dims(3), ranks{1}{3}, 0.9);
+        U{4} = sparse_matrix(dims(4), ranks{1}{4}, 0.9);
         X_ = tensor_contraction(...
             tensor_contraction(...
             tensor_contraction(...
@@ -88,11 +88,11 @@ for mc=1:MC
 %         X_ = ht_to_tensor(Xht);
     end
 
-    if SNR ~= []
+    if SNR ~= 0
         Nt = randn(size(X_)); 
         tau = (norm(X_(:),'fro')/norm(Nt(:), 'fro'))*10^(-SNR/20);
         X = X_ + tau*Nt;
-        else
+    else
         X = X_;
     end
         

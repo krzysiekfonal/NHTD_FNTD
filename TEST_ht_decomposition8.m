@@ -4,7 +4,7 @@ benchmark = 1; %1 - test data, 2 - coil_100, 3 - film4
 % 5 - NTD(als), 6 - NTD(hals), 7 - NTD(xray), 8 - HO-SVD
 % 9 - FNTD(als), 10 - FNTD(hals), 11 - FNTD(xray), 12 - FTD(svd)
 %algs = [1 2 3 4 5 6 7 8 9 10 11];
-algs = [4];
+algs = [1 2 3 4];
 SNR = [];
 MC = 1;
 n_algs = size(algs, 2);
@@ -19,7 +19,7 @@ maxiters = 100;
 if benchmark == 1
     % dims ranks for this benchmark
     dims = [6 6 6 6 6 6 6 6];
-    ranks = [3 3 3 3 3 3 3 3 3 3 3 3 3 3 1];
+    ranks = {{3,3,3,3,3,3,3,3},{3,3,3,3},{3,3}};
 elseif benchmark == 2
     N = size(ranks,2);
     U = [];
@@ -65,18 +65,18 @@ for mc=1:MC
 %             U{3}, 1, 2),...
 %             U{4}, 1, 2);
 %2nd approach
-        Core = sparse_matrix(ranks(1) * ranks(2) * ranks(3) * ranks(4), ...
-            ranks(5) * ranks(6) * ranks(7) * ranks(8), 0.9);
-        Core = reshape(Core, ranks(1:8));
+        Core = sparse_matrix(ranks{1}{1} * ranks{1}{2} * ranks{1}{3} * ranks{1}{4}, ...
+            ranks{1}{5} * ranks{1}{6} * ranks{1}{7} * ranks{1}{8}, 0.9);
+        Core = reshape(Core, ranks{1}{1:8});
         U = cell(1,8);
-        U{1} = sparse_matrix(dims(1), ranks(1), 0.6);
-        U{2} = sparse_matrix(dims(2), ranks(2), 0.6);
-        U{3} = sparse_matrix(dims(3), ranks(3), 0.6);
-        U{4} = sparse_matrix(dims(4), ranks(4), 0.6);
-        U{5} = sparse_matrix(dims(5), ranks(5), 0.6);
-        U{6} = sparse_matrix(dims(6), ranks(6), 0.6);
-        U{7} = sparse_matrix(dims(7), ranks(7), 0.6);
-        U{8} = sparse_matrix(dims(8), ranks(8), 0.6);
+        U{1} = sparse_matrix(dims(1), ranks{1}{1}, 0.6);
+        U{2} = sparse_matrix(dims(2), ranks{1}{2}, 0.6);
+        U{3} = sparse_matrix(dims(3), ranks{1}{3}, 0.6);
+        U{4} = sparse_matrix(dims(4), ranks{1}{4}, 0.6);
+        U{5} = sparse_matrix(dims(5), ranks{1}{5}, 0.6);
+        U{6} = sparse_matrix(dims(6), ranks{1}{6}, 0.6);
+        U{7} = sparse_matrix(dims(7), ranks{1}{7}, 0.6);
+        U{8} = sparse_matrix(dims(8), ranks{1}{8}, 0.6);
         X_ = tensor_contraction(...
             tensor_contraction(...
             tensor_contraction(...

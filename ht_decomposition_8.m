@@ -1,5 +1,6 @@
-function [ Xtt ] = ht_decomposition( X, ranks, alg, varargin )
+function [ Xtt ] = ht_decomposition_8( X, ranks, alg, varargin )
 
+ranks = cell2mat([ranks{:}]);
 Xtt = cell(size(ranks,1),1);
 dim = size(X);
 N = ndims(X);
@@ -13,7 +14,7 @@ for n = 1:N
 end
 
 X = X_;
-% TODO make it mor felxible - currently implemented for 4 dims only
+% TODO make it more felxible - currently implemented for 4 dims only
 S = reshape(X, ranks(1) * ranks(2), prod(ranks(3:8)));
 Xtt{9} = lrmf(S, alg, ranks(9), varargin);
 X_ = Xtt{9}' * S;

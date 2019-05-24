@@ -7,27 +7,24 @@ tic
 switch (alg)
     %HT ALGS
     case 1
+        Yht = hnt_decomposition(X, ranks, 'als', varargin{1:end});
         if (N == 4)
-            Yht = nht_decomposition(X, ranks, 'als', varargin{1:end});
             Y = ht_to_tensor(Yht);
         else
-            Yht = nht_decomposition_8(X, ranks, 'als', varargin{1:end});
             Y = ht_to_tensor_8(Yht);
         end
     case 2
+        Yht = hnt_decomposition(X, ranks, 'hals', varargin{1:end});
         if (N == 4)
-            Yht = nht_decomposition(X, ranks, 'hals', varargin{1:end});
             Y = ht_to_tensor(Yht);
         else
-            Yht = nht_decomposition_8(X, ranks, 'hals', varargin{1:end});
             Y = ht_to_tensor_8(Yht);
         end
     case 3
+        Yht = hnt_decomposition(X, ranks, 'xray', varargin{1:end});
         if (N == 4)
-            Yht = nht_decomposition(X, ranks, 'xray', varargin{1:end});
             Y = ht_to_tensor(Yht);
         else
-            Yht = nht_decomposition_8(X, ranks, 'xray', varargin{1:end});
             Y = ht_to_tensor_8(Yht);
         end
     case 4

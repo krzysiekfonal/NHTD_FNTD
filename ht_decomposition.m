@@ -1,5 +1,6 @@
 function [ Xtt ] = ht_decomposition( X, ranks, alg, varargin )
 
+ranks = cell2mat([ranks{:}]);
 Xtt = cell(size(ranks,1),1);
 dim = size(X);
 N = ndims(X);
