@@ -35,28 +35,38 @@ switch (alg)
             Yht = ht_decomposition_8(X, ranks, 'left_svd_qr', varargin{1:end});
             Y = ht_to_tensor_8(Yht);
         end
+        
+    % Tucker decompositions    
     case 5
-        Yht = ntd_decomposition(X, ranks, 'ntd_als', varargin{1:end});
+        Yht = ntd_decomposition(X, cell2mat(ranks{1}), 'ntd_als', varargin{1:end});
         Y = tucker_to_tensor(Yht);        
     case 6
-        Yht = ntd_decomposition(X, ranks, 'ntd_hals', varargin{1:end});
+        Yht = ntd_decomposition(X, cell2mat(ranks{1}), 'ntd_hals', varargin{1:end});
         Y = tucker_to_tensor(Yht);   
 
     case 8
-        Yht = hosvd_decomposition(X, ranks, 'hosvd', varargin{1:end});
+        Yht = hosvd_decomposition(X, cell2mat(ranks{1}), 'hosvd', varargin{1:end});
         Y = tucker_to_tensor(Yht);        
     case 9
-        Yht = fnt_decomposition(X, ranks, 'als', varargin{1:end});
+        Yht = fnt_decomposition(X, cell2mat(ranks{1}), 'als', varargin{1:end});
         Y = tucker_to_tensor(Yht);
     case 10
-        Yht = fnt_decomposition(X, ranks, 'hals', varargin{1:end});
+        Yht = fnt_decomposition(X, cell2mat(ranks{1}), 'hals', varargin{1:end});
         Y = tucker_to_tensor(Yht);
     case 11
-        Yht = fnt_decomposition(X, ranks, 'xray', varargin{1:end});
+        Yht = fnt_decomposition(X, cell2mat(ranks{1}), 'xray', varargin{1:end});
         Y = tucker_to_tensor(Yht);
     case 12
-        Yht = fnt_decomposition(X, ranks, 'svd', varargin{1:end});
+        Yht = fnt_decomposition(X, cell2mat(ranks{1}), 'svd', varargin{1:end});
         Y = tucker_to_tensor(Yht);
+        
+    % others
+    case 13
+        T = cell(2,1);
+        [T{1}, T{2}] = mlsvd_rsi(X, cell2mat(ranks{1}));
+        Yht = cpd_nls(T, cpd_rnd(size(X), ranks{1}{1}));
+        Y = ktensor(Yht);
+        Y = full(Y);
 end
 % calculate results
 results = {};
