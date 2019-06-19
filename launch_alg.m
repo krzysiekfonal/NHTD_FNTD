@@ -64,9 +64,25 @@ switch (alg)
     case 13
         T = cell(2,1);
         [T{1}, T{2}] = mlsvd_rsi(X, cell2mat(ranks{1}));
-        Yht = cpd_nls(T, cpd_rnd(size(X), ranks{1}{1}));
+        s = prod(size(U{1})) * size(U,2);
+        lb = ones(s,1) * 10e-14;
+        ub = ones(s,1) * 10e6;
+        Yht = cpd_nls(T, cpd_rnd(size(X), ranks{1}{1}), 'Algorithm',...
+            @(f,df,z, options) nlsb_gndl(f,df,lb,ub,z, options));
         Y = ktensor(Yht);
         Y = full(Y);
+    case 14
+        T = cell(2,1);
+        [T{1}, T{2}] = mlsvd_rsi(X, cell2mat(ranks{1}));
+        [U0, S0] = lmlra_rnd(size(X), cell2mat(ranks{1}));
+        s = prod(size(U{1})) * size(U,2) + prod(cell2mat(ranks{1}));
+        lb = ones(s,1) * 10e-14;
+        ub = ones(s,1) * 10e6;
+        [Yht,Sf] = lmlra_nls(T, U0, S0, 'Normalize', false, 'Algorithm',...
+            @(f,df,z, options) nlsb_gndl(f,df,lb,ub,z, options));
+        Y = ttensor(Sf, Yht);
+        Y = full(Y);
+        
 end
 % calculate results
 results = {};
